@@ -7,3 +7,9 @@ socket.on("connect", () => {
 socket.on("disconnect", () => {
     console.log(socket.id); 
 });
+
+socket.on('Hi',event =>{
+    console.log(event)
+})
+
+socket.emit('message',{from:socket.id,message:`a messagge`})

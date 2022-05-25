@@ -10,9 +10,10 @@ app.use(cors())
 
 const server = http.createServer(app);
 const { Server } = require("socket.io");
-const io = new Server(server, {cors: {
-    origin: "http://localhost:1234",
-  }
+const io = new Server(server, {
+    cors: {
+        origin: "http://localhost:1234",
+    }
 });
 
 
@@ -21,8 +22,13 @@ app.get('/', (req, res) => {
     res.json({ message: 'Websocke :)' })
 });
 
-io.on('connection', (socket) => {
+io.on('connection', (client) => {
     console.log('a user connected');
+    client.emit('Hi','Hi every One');
+    client.on('message',(event$)=>{
+        console.log(event$)
+    })
+    client.send('message',{message:'communication :)'})
 });
 
 server.listen(3000, () => {
