@@ -7,6 +7,7 @@ const app = express();
 app.options('*', cors())
 app.use(cors())
 
+let clientConnections=[];
 
 const server = http.createServer(app);
 const { Server } = require("socket.io");
@@ -23,13 +24,16 @@ app.get('/', (req, res) => {
 });
 
 io.on('connection', (client) => {
+    clientConnections.push(client.id)
+    console.dir(client)
     console.log('a user connected');
-    client.emit('Hi','Hi every One');
+    client.emit('Hi',JSON.stringify(clientConnections));
     client.on('message',(event$)=>{
         console.log(event$)
     })
     client.send('message',{message:'communication :)'})
 });
+
 
 server.listen(3000, () => {
     console.log('listening on *:3000');
